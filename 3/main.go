@@ -9,19 +9,24 @@ import (
 	"strings"
 )
 
-func partA(data []byte) {
+func doMulOnString(data []byte) int {
+
 	totalSum := 0
-	totalMatches := 0
 
 	r, _ := regexp.Compile(`mul\((\d+),(\d+)\)`)
 	for _, match := range r.FindAllSubmatch(data, -1) {
 		num1, _ := strconv.Atoi(string(match[1]))
 		num2, _ := strconv.Atoi(string(match[2]))
 		totalSum += num1 * num2
-		totalMatches++
+		fmt.Printf("\033[1;33m[+]\033[0m mul(%d, %d) = %d\n", num1, num2, num1*num2)
 	}
+	return totalSum
+}
 
-	fmt.Printf("[+] Total matches: %d\n", totalMatches)
+func partA(data []byte) {
+
+	totalSum := 0
+	doMulOnString(data)
 	fmt.Printf("[+] Total sum: %d\n", totalSum)
 }
 
@@ -45,21 +50,15 @@ func partB(data []byte) {
 			skip = true
 		}
 
-		fmt.Printf("\033[1;34m[+]\033[0m dont: %v\n", donts)
 		for _, mul := range muls {
 			if mul[0] < donts[0][0] || skip {
 				mulStr := []byte(block[mul[0]:mul[1]])
-				for _, match := range r.FindAllSubmatch(mulStr, -1) {
-					num1, _ := strconv.Atoi(string(match[1]))
-					num2, _ := strconv.Atoi(string(match[2]))
-					totalSum += num1 * num2
-					fmt.Printf("\033[1;33m[+]\033[0m mul(%d, %d) = %d\n", num1, num2, num1*num2)
-				}
+				totalSum += doMulOnString(mulStr)
 			}
 
 		}
 	}
-	fmt.Printf("[+] Total sum: %d\n", totalSum)
+	fmt.Printf("\n[+] Total sum: %d\n", totalSum)
 }
 
 func main() {
