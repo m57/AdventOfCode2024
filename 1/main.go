@@ -3,22 +3,19 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"math"
 	"os"
 	"sort"
 )
 
 func getListsDistance(list1 []int, list2 []int) int {
-	totalDistance := 0
+	totalDistance := 0.0
 
 	for i := 0; i < len(list1); i++ {
-		if list1[i] < list2[i] {
-			totalDistance += list2[i] - list1[i]
-		} else {
-			totalDistance += list1[i] - list2[i]
-		}
+		totalDistance += math.Abs(float64(list1[i] - list2[i]))
 	}
 
-	return totalDistance
+	return int(totalDistance)
 }
 
 func getListsSimilarityScore(list1 []int, list2 []int) int {
